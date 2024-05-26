@@ -19,8 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
-    credentials: true,
+    origin: ["http://localhost:3000", "https://hardware-shop-delta.vercel.app"],
+    credentials: true
   })
 );
 
@@ -47,4 +47,4 @@ mongoose
       console.log(`Server Running on port ${PORT}`);
     });
   })
-  .catch((err) => console.log(err));
+  .catch(err => console.log(err));
