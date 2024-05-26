@@ -19,20 +19,26 @@ const createProduct = asyncHandler(async (req, res) => {
     // Save image to cloudinary
     let uploadedFile;
     try {
+      cloudinary.config({
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_KEY,
+        api_secret: process.env.CLOUDINARY_SECRET
+      });
       uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-        folder: "Pinvent App",
-        resource_type: "image",
+        folder: "Stockify App",
+        resource_type: "image"
       });
     } catch (error) {
       res.status(500);
-      throw new Error("Image could not be uploaded");
+      console.log(error);
+      throw new Error("Image could not be uploaded", error);
     }
 
     fileData = {
       fileName: req.file.originalname,
       filePath: uploadedFile.secure_url,
       fileType: req.file.mimetype,
-      fileSize: fileSizeFormatter(req.file.size, 2),
+      fileSize: fileSizeFormatter(req.file.size, 2)
     };
   }
 
@@ -45,7 +51,7 @@ const createProduct = asyncHandler(async (req, res) => {
     quantity,
     price,
     description,
-    image: fileData,
+    image: fileData
   });
 
   res.status(201).json(product);
@@ -116,7 +122,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     try {
       uploadedFile = await cloudinary.uploader.upload(req.file.path, {
         folder: "Pinvent App",
-        resource_type: "image",
+        resource_type: "image"
       });
     } catch (error) {
       res.status(500);
@@ -127,7 +133,7 @@ const updateProduct = asyncHandler(async (req, res) => {
       fileName: req.file.originalname,
       filePath: uploadedFile.secure_url,
       fileType: req.file.mimetype,
-      fileSize: fileSizeFormatter(req.file.size, 2),
+      fileSize: fileSizeFormatter(req.file.size, 2)
     };
   }
 
@@ -140,11 +146,11 @@ const updateProduct = asyncHandler(async (req, res) => {
       quantity,
       price,
       description,
-      image: Object.keys(fileData).length === 0 ? product?.image : fileData,
+      image: Object.keys(fileData).length === 0 ? product?.image : fileData
     },
     {
       new: true,
-      runValidators: true,
+      runValidators: true
     }
   );
 
@@ -156,5 +162,5 @@ module.exports = {
   getProducts,
   getProduct,
   deleteProduct,
-  updateProduct,
+  updateProduct
 };
