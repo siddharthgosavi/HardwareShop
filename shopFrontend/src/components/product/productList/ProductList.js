@@ -11,6 +11,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { deleteProduct, getProducts } from "../../../redux/features/product/productSlice";
 import { Link } from "react-router-dom";
+import Icon from "../../../assets/hardware.png";
 
 const ProductList = ({ products, isLoading }) => {
   const [search, setSearch] = useState("");
@@ -108,17 +109,18 @@ const ProductList = ({ products, isLoading }) => {
               <tbody>
                 {currentItems.map((product, index) => {
                   const { _id, name, category, price, quantity } = product;
-                  console.log();
                   return (
                     <tr key={_id}>
                       <td>{index + 1}</td>
                       <td>
-                        {product.image.filePath != null ? (
+                        {product.image ? (
                           <div className="crop">
                             <img width={"50px"} height={"50px"} src={product.image.filePath} alt="product" />
                           </div>
                         ) : (
-                          <p>No image set for this poduct.</p>
+                          <div className="crop">
+                            <img width={"50px"} height={"50px"} src={Icon} alt="product" />
+                          </div>
                         )}
                       </td>
                       <td>{shortenText(name, 16)}</td>

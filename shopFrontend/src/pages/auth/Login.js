@@ -11,7 +11,7 @@ import Loader from "../../components/loader/Loader";
 
 const initialState = {
   email: "",
-  password: "",
+  password: ""
 };
 
 const Login = () => {
@@ -21,12 +21,12 @@ const Login = () => {
   const [formData, setformData] = useState(initialState);
   const { email, password } = formData;
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setformData({ ...formData, [name]: value });
   };
 
-  const login = async (e) => {
+  const login = async e => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -39,7 +39,7 @@ const Login = () => {
 
     const userData = {
       email,
-      password,
+      password
     };
     setIsLoading(true);
     try {
@@ -65,32 +65,22 @@ const Login = () => {
           <h2>Login</h2>
 
           <form onSubmit={login}>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              name="email"
-              value={email}
-              onChange={handleInputChange}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              name="password"
-              value={password}
-              onChange={handleInputChange}
-            />
+            <input type="email" placeholder="Email" required name="email" value={email} onChange={handleInputChange} />
+            <input type="password" placeholder="Password" required name="password" value={password} onChange={handleInputChange} />
             <button type="submit" className="--btn --btn-primary --btn-block">
               Login
             </button>
           </form>
-          <Link to="/forgot">Forgot Password</Link>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <Link to="/forgot">Forgot Password?</Link>
+            <Link to="/">Go Home</Link>
+          </div>
 
           <span className={styles.register}>
-            <Link to="/">Home</Link>
-            <p> &nbsp; Don't have an account? &nbsp;</p>
-            <Link to="/register">Register</Link>
+            &nbsp; Don't have an account?&nbsp;
+            <a style={{ fontWeight: "bold", color: "blue" }} target={"_blank"} rel="noreferrer"  href={"https://www.linkedin.com/in/siddharthgosavi/"}>
+              Contact Developer
+            </a>
           </span>
         </div>
       </Card>
