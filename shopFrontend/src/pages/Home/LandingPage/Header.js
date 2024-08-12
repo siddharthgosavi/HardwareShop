@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <header className="header">
+    <header className="landing-header">
        <img src={SaiSnehLogo} alt="Your Logo" class="logo"/>
       <nav>
         <ul>
