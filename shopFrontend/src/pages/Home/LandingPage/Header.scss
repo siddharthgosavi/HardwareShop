@@ -1,0 +1,61 @@
+// components/Header.scss
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: rgba(248, 248, 248, 0.4); // Semi-transparent background
+  backdrop-filter: blur(10px); // Adds a blur effect to the background
+  position: fixed; // Makes the header stick to the top
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; // Ensures the header stays on top of other elements
+  transition: background-color 0.3s ease; // Smooth transition for background color changes
+
+  &:hover {
+    background-color: rgba(248, 248, 248, 0.95); // More opaque on hover
+  }
+
+  .logo {
+    height: 5rem;
+    filter: drop-shadow(px px px #000000);
+  }
+
+  nav {
+    ul {
+      display: flex;
+      list-style-type: none;
+
+      li {
+        margin-right: 4rem;
+
+        a {
+          font-weight: 600;
+          text-decoration: none;
+          color: #333;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #007bff;
+            text-decoration: underline;
+          }
+        } 
+      }
+    }
+  }
+
+  .login-btn {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
