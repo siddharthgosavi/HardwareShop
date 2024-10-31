@@ -1,16 +1,22 @@
 import { FaTh, FaRegChartBar, FaCommentAlt } from "react-icons/fa";
 import { BiImageAdd } from "react-icons/bi";
+import { BiPurchaseTag } from "react-icons/bi";
 
 const menu = [
   {
     title: "Dashboard",
     icon: <FaTh />,
-    path: "/dashboard",
+    path: "/dashboard"
   },
   {
     title: "Add Product",
     icon: <BiImageAdd />,
-    path: "/add-product",
+    path: "/add-product"
+  },
+  {
+    title: "Sales",
+    icon: <BiPurchaseTag />,
+    path: "/sale-product"
   },
   {
     title: "Account",
@@ -18,19 +24,14 @@ const menu = [
     childrens: [
       {
         title: "Profile",
-        path: "/profile",
+        path: "/profile"
       },
       {
         title: "Edit Profile",
-        path: "/edit-profile",
-      },
-    ],
-  },
-  {
-    title: "Report Bug",
-    icon: <FaCommentAlt />,
-    path: "/contact-us",
-  },
+        path: "/edit-profile"
+      }
+    ]
+  }
 ];
 
 export default menu;

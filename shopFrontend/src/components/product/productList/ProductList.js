@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { SpinnerImg } from "../../loader/Loader";
 import "./productList.scss";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { BsCartCheckFill, BsCartPlus } from "react-icons/bs";
+
 import { AiOutlineEye } from "react-icons/ai";
 import Search from "../../search/Search";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,10 +14,15 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import { deleteProduct, getProducts } from "../../../redux/features/product/productSlice";
 import { Link } from "react-router-dom";
 import Icon from "../../../assets/hardware.png";
+import { BiCart } from "react-icons/bi";
+import CartDrawer from "./CartDrawer";
 
 const ProductList = ({ products, isLoading }) => {
   const [search, setSearch] = useState("");
+  const [cartItemIds, setCartItemIds] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const filteredProducts = useSelector(selectFilteredPoducts);
+  const [total, setTotal] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -27,8 +34,41 @@ const ProductList = ({ products, isLoading }) => {
     return text;
   };
 
+  //cart logic
+  const [cartItems, setCartItems] = useState([]);
+
+  const addCourseToCartFunction = product => {
+    const alreadyCourses = cartItems.find(item => item._id === product._id);
+    if (alreadyCourses) {
+      const latestCartUpdate = cartItems.map(item =>
+        item._id === product._id
+          ? {
+              ...item,
+              quantity: item.quantity + 1
+            }
+          : item
+      );
+      setCartItems(latestCartUpdate);
+    } else {
+      setCartItems([...cartItems, { product: product, quantity: 1 }]);
+      setCartItemIds([...cartItemIds, product._id]);
+    }
+  };
+
+  const deleteCourseFromCartFunction = product => {
+    const updatedCart = cartItems.filter(item => item.product._id !== product._id);
+    setCartItemIds(cartItemIds.filter(item => item !== product._id));
+    setCartItems(updatedCart);
+  };
+
+  const totalAmountCalculationFunction = () => {
+    const totalPrice = cartItems.reduce((totall, item) => totall + parseFloat(item.product.price * item.quantity), 0);
+    return totalPrice;
+  };
+
+  //end og cart logic
+
   const delProduct = async id => {
-    console.log(id);
     await dispatch(deleteProduct(id));
     await dispatch(getProducts());
   };
@@ -48,6 +88,12 @@ const ProductList = ({ products, isLoading }) => {
         }
       ]
     });
+  };
+
+  const toggleCart = () => {
+    console.log("toggle cart", isCartOpen);
+
+    setIsCartOpen(!isCartOpen);
   };
 
   //   Begin Pagination
@@ -75,12 +121,22 @@ const ProductList = ({ products, isLoading }) => {
 
   return (
     <div className="product-list">
+      <CartDrawer isOpen={isCartOpen} cartItems={cartItems} onClose={toggleCart} deleteCourseFromCartFunction={deleteCourseFromCartFunction} totalAmountCalculationFunction={totalAmountCalculationFunction} setCartItems={setCartItems} />
       <hr />
       <div className="table">
         <div className="--flex-between --flex-dir-column">
           <span>
             <h3>Inventory Items</h3>
           </span>
+          {cartItems.length > 0 ? (
+            <p className="btn btn-primary" onClick={toggleCart}>
+              <BsCartCheckFill size={35} color="green" cursor={"pointer"} /> {cartItems.length}{" "}
+            </p>
+          ) : (
+            <p onClick={toggleCart}>
+              <BiCart size={35} color="red" cursor={"pointer"} />
+            </p>
+          )}
           <span>
             <Search value={search} onChange={e => setSearch(e.target.value)} />
           </span>
@@ -148,6 +204,7 @@ const ProductList = ({ products, isLoading }) => {
                         <span>
                           <FaTrashAlt size={20} color={"red"} onClick={() => confirmDelete(_id)} />
                         </span>
+                        <span>{cartItemIds.includes(_id) ? <BsCartCheckFill size={20} color={"red"} onClick={() => deleteCourseFromCartFunction(product)} /> : <BsCartPlus size={20} color={"green"} onClick={() => addCourseToCartFunction(product)} />}</span>
                       </td>
                     </tr>
                   );

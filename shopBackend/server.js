@@ -6,6 +6,8 @@ const cors = require("cors");
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 const contactRoute = require("./routes/contactRoute");
+const customerInfoRoutes = require("./routes/customerInfoRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const errorHandler = require("./middleWare/errorMiddleware");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -30,6 +32,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 app.use("/api/contactus", contactRoute);
+app.use("/api/customerInfo", customerInfoRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Routes
 app.get("/", (req, res) => {

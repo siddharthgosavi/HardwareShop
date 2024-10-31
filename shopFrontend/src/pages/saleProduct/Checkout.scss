@@ -1,0 +1,153 @@
+.checkout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: black;
+  font-size: larger;
+
+  .both {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 20px;
+  }
+
+  .cartItems {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .add-order {
+    margin-bottom: 5rem;
+    display: flex;
+    justify-content: center;
+    .card {
+      width: 100%;
+      max-width: 500px;
+      padding: 1rem;
+    }
+    form {
+      label {
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--color-dark);
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="file"],
+      input[type="email"],
+      select,
+      input[type="password"] {
+        display: block;
+        font-size: 1.6rem;
+        font-weight: 300;
+        padding: 1rem;
+        margin: 1rem auto;
+        width: 100%;
+        border: 1px solid #777;
+        border-radius: 3px;
+        outline: none;
+      }
+      ul {
+        display: block;
+        font-size: 1.6rem;
+        font-weight: 300;
+        margin: 1rem auto;
+        width: 100%;
+        border: 1px solid #777;
+        border-radius: 3px;
+        outline: none;
+        background-color: white;
+      }
+    }
+    li {
+      padding-left: 1rem;
+      border-bottom: 1px solid black;
+      cursor: pointer;
+    }
+    li:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+
+  .group {
+    border: 1px solid var(--dark-blue);
+    padding: 5px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: larger;
+
+    th,
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .pagination button {
+    padding: 8px 12px;
+    margin: 4px;
+    border: none;
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+
+  .pagination button.active {
+    background-color: #ddd;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    font-size: larger;
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+}

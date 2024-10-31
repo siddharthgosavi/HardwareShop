@@ -1,12 +1,12 @@
 import React from "react";
 import "./Header.scss";
-import SaiSnehLogo from './SaiSnehLogo.png'
+import SaiSnehLogo from "./SaiSnehLogo.png";
 import { Link } from "react-router-dom";
 
 function Header() {
   return (
     <header className="landing-header">
-       <img src={SaiSnehLogo} alt="Your Logo" class="logo"/>
+      <img src={SaiSnehLogo} alt="Your Logo" className="logo" />
       <nav>
         <ul>
           <li>
@@ -23,7 +23,9 @@ function Header() {
           </li>
         </ul>
       </nav>
-      <button className="login-btn"><Link to="/login">Login</Link></button>
+      <button className="login-btn">
+        <Link to="/login">Login</Link>
+      </button>
     </header>
   );
 }

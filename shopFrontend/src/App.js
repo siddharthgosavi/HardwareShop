@@ -19,6 +19,7 @@ import EditProduct from "./pages/editProduct/EditProduct";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
 import Contact from "./pages/contact/Contact";
+import SaleProduct from "./pages/saleProduct/SaleProduct";
 
 axios.defaults.withCredentials = true;
 
@@ -59,6 +60,16 @@ function App() {
             <Sidebar>
               <Layout>
                 <AddProduct />
+              </Layout>
+            </Sidebar>
+          }
+        />
+         <Route
+          path="/sale-product"
+          element={
+            <Sidebar>
+              <Layout>
+                <SaleProduct />
               </Layout>
             </Sidebar>
           }

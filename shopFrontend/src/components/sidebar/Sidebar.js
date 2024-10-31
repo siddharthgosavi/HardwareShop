@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./Sidebar.scss";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { RiProductHuntLine } from "react-icons/ri";
+import { BiHomeCircle } from "react-icons/bi";
+
 import menu from "../../data/sidebar";
 import SidebarItem from "./SidebarItem";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +21,7 @@ const Sidebar = ({ children }) => {
       <div className="sidebar" style={{ width: isOpen ? "230px" : "60px" }}>
         <div className="top_section">
           <div className="logo" style={{ display: isOpen ? "block" : "none" }}>
-            <RiProductHuntLine
+            <BiHomeCircle
               size={35}
               style={{ cursor: "pointer" }}
               onClick={goHome}
