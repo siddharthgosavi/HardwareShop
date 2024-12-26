@@ -8,7 +8,7 @@ function Footer() {
       <div className="f-item-con">
         <div className="app-info">
           <span className="app-name">
-            <span className="app-initial">SaiSneh</span>
+            <span className="app-initial">Sai Enterprises</span>
             <p>Electricals and Hardwares is your trusted source for high-quality hardware, electronics, and PVC/UPVC pipes. With over 20 years of experience, we pride ourselves on providing top-notch products and exceptional customer service.</p>
           </span>
         </div>

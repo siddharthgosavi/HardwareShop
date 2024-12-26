@@ -9,14 +9,18 @@ import { FILTER_ORDERS, selectFilteredOrders } from "../../redux/features/orders
 import moment from "moment-timezone";
 import OrderDetail from "./OrderDetail";
 import "./Orders.scss";
+import { getOrders, updatePaymentMode, selectOrders, selectIsLoading } from "../../redux/features/orders/orderSlice";
 
-const Orders = ({ orders, isLoading }) => {
+const Orders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchOption, setSearchOption] = useState("name");
   const [searchValue, setSearchValue] = useState("");
-  const [filteredOrders, setFilteredOrders] = useState(orders);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [editOrder, setEditOrder] = useState(null); // State to handle editing order
+  const [newPaymentMode, setNewPaymentMode] = useState(""); // State to handle new payment mode
+
   const shortenText = (text, n) => {
     if (text.length > n) {
       const shortenedText = text.substring(0, n).concat("...");
@@ -26,6 +30,12 @@ const Orders = ({ orders, isLoading }) => {
   };
 
   const dispatch = useDispatch();
+  const orders = useSelector(selectOrders);
+  const isLoading = useSelector(selectIsLoading);
+
+  useEffect(() => {
+    dispatch(getOrders());
+  }, [dispatch]);
 
   //   Begin Pagination
   const [currentItems, setCurrentItems] = useState([]);
@@ -53,8 +63,8 @@ const Orders = ({ orders, isLoading }) => {
 
   useEffect(() => {
     const filtered = orders.filter(order => {
-      const matchesName = order.customerInfo.name.toLowerCase().includes(searchValue.toLowerCase());
-      const matchesMobile = order.customerInfo.mobile.includes(searchValue);
+      const matchesName = order.customerInfo?.name?.toLowerCase().includes(searchValue.toLowerCase());
+      const matchesMobile = order.customerInfo?.mobile?.includes(searchValue);
       const matchesDate = moment(order.orderDate).format("DD-MM-YY").includes(searchValue);
       const matchesOrderId = order.orderId.includes(searchValue);
 
@@ -67,41 +77,53 @@ const Orders = ({ orders, isLoading }) => {
     setFilteredOrders(filtered);
   }, [searchOption, searchValue, orders]);
 
-  const sortOrders = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+  const sortOrders = key => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
 
     const sortedOrders = [...filteredOrders].sort((a, b) => {
-      const aValue = key.split('.').reduce((obj, keyPart) => obj[keyPart], a);
-      const bValue = key.split('.').reduce((obj, keyPart) => obj[keyPart], b);
+      const aValue = key.split(".").reduce((obj, keyPart) => obj[keyPart], a);
+      const bValue = key.split(".").reduce((obj, keyPart) => obj[keyPart], b);
 
       if (aValue < bValue) {
-        return direction === 'asc' ? -1 : 1;
+        return direction === "asc" ? -1 : 1;
       }
       if (aValue > bValue) {
-        return direction === 'asc' ? 1 : -1;
+        return direction === "asc" ? 1 : -1;
       }
       return 0;
     });
     setFilteredOrders(sortedOrders);
   };
 
-  const getSortIcon = (key) => {
+  const getSortIcon = key => {
     if (sortConfig.key === key) {
-      return sortConfig.direction === 'asc' ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />;
+      return sortConfig.direction === "asc" ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />;
     }
     return null;
   };
 
-  const handleViewOrder = (order) => {
+  const handleViewOrder = order => {
     setSelectedOrder(order);
   };
 
   const closeDetail = () => {
     setSelectedOrder(null);
+  };
+
+  const handleEditOrder = order => {
+    setEditOrder(order);
+    setNewPaymentMode(order.paymentMode);
+  };
+
+  const handleSavePaymentMode = () => {
+    dispatch(updatePaymentMode({ id: editOrder._id, paymentMode: newPaymentMode })).then(() => {
+      setEditOrder(null);
+    });
+    window.location.reload();
   };
 
   // ... other functions for pagination, etc. ...
@@ -155,14 +177,14 @@ const Orders = ({ orders, isLoading }) => {
                 <thead>
                   <tr>
                     <th style={{ width: "100px" }}>Order No</th>
-                    <th onClick={() => sortOrders('orderId')}>Invoice ID {getSortIcon('orderId')}</th>
-                    <th onClick={() => sortOrders('customerInfo.name')}>Customer Name {getSortIcon('customerInfo.name')}</th>
-                    <th onClick={() => sortOrders('customerInfo.mobile')}>Customer Mobile {getSortIcon('customerInfo.mobile')}</th>
-                    <th onClick={() => sortOrders('customerInfo.address')}>Customer Address {getSortIcon('customerInfo.address')}</th>
-                    <th onClick={() => sortOrders('products.length')}>No. of Products {getSortIcon('products.length')}</th>
-                    <th onClick={() => sortOrders('total')}>Total Cost {getSortIcon('total')}</th>
-                    <th onClick={() => sortOrders('orderDate')}>Order DateTime {getSortIcon('orderDate')}</th>
-                    <th onClick={() => sortOrders('paymentMode')}>Paid by {getSortIcon('paymentMode')}</th>
+                    <th onClick={() => sortOrders("orderId")}>Invoice ID {getSortIcon("orderId")}</th>
+                    <th onClick={() => sortOrders("customerInfo.name")}>Customer Name {getSortIcon("customerInfo.name")}</th>
+                    <th onClick={() => sortOrders("customerInfo.mobile")}>Customer Mobile {getSortIcon("customerInfo.mobile")}</th>
+                    <th onClick={() => sortOrders("customerInfo.address")}>Customer Address {getSortIcon("customerInfo.address")}</th>
+                    <th onClick={() => sortOrders("products.length")}>No. of Products {getSortIcon("products.length")}</th>
+                    <th onClick={() => sortOrders("total")}>Total Cost {getSortIcon("total")}</th>
+                    <th onClick={() => sortOrders("orderDate")}>Order DateTime {getSortIcon("orderDate")}</th>
+                    <th onClick={() => sortOrders("paymentMode")}>Paid by {getSortIcon("paymentMode")}</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -187,9 +209,21 @@ const Orders = ({ orders, isLoading }) => {
                         <td>{paymentMode === "Unpaid" ? <span style={{ fontWeight: "bolder", color: "red" }}>{paymentMode}</span> : paymentMode}</td>
                         <td style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "10px" }}>
                           <AiOutlineEye color="green" size={25} onClick={() => handleViewOrder(orders)} />
-                          <FaEdit color="blue" size={25} />
-                          <AiFillDelete color="red" size={25} />
+                          {paymentMode === "Unpaid" && <FaEdit color="blue" size={25} onClick={() => handleEditOrder(orders)} />}
                         </td>
+                        {editOrder && editOrder._id === _id && (
+                          <td>
+                            <div className="edit-order-modal">
+                              <select value={newPaymentMode} onChange={e => setNewPaymentMode(e.target.value)}>
+                                <option value="Unpaid">Unpaid</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Online">Online</option>
+                              </select>
+                              <button onClick={handleSavePaymentMode}>Ok</button>
+                              <button onClick={() => setEditOrder(null)}>Cancel</button>
+                            </div>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}

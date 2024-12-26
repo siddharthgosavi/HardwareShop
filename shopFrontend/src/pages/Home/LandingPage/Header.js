@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.scss";
-import SaiSnehLogo from "./SaiSnehLogo.png";
+import SaiSnehLogo from "./Logo.png";
 import { Link } from "react-router-dom";
 
 function Header() {

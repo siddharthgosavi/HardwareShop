@@ -6,11 +6,7 @@ const Counter = require("../models/counterModel");
 
 // Function to get the next order ID
 const getNextOrderId = async () => {
-  const counter = await Counter.findOneAndUpdate(
-    { name: "orderId" },
-    { $inc: { value: 1 } },
-    { new: true, upsert: true }
-  );
+  const counter = await Counter.findOneAndUpdate({ name: "orderId" }, { $inc: { value: 1 } }, { new: true, upsert: true });
   return counter.value.toString().padStart(6, "0");
 };
 
@@ -49,7 +45,7 @@ const createOrder = asyncHandler(async (req, res) => {
     customerInfo: customerInfo,
     products: productsArray,
     total,
-    paymentMode 
+    paymentMode
   });
 
   res.status(201).json(order);
@@ -73,8 +69,23 @@ const getOrder = asyncHandler(async (req, res) => {
   res.status(200).json(order);
 });
 
+// Controller function to update the payment mode of an order
+const updatePaymentMode = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { paymentMode } = req.body;
+
+  const order = await Order.findByIdAndUpdate(id, { paymentMode }, { new: true });
+
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+
+  res.status(200).json(order);
+});
+
 module.exports = {
   createOrder,
   getAllOrders,
-  getOrder
+  getOrder,
+  updatePaymentMode
 };

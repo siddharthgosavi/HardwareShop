@@ -44,6 +44,17 @@ export const getOrder = createAsyncThunk("orders/get", async (id, thunkAPI) => {
   }
 });
 
+// Async thunk to update the payment mode
+export const updatePaymentMode = createAsyncThunk("orders/updatePaymentMode", async ({ id, paymentMode }, thunkAPI) => {
+  try {
+    return await orderService.updatePaymentMode({ id, paymentMode });
+  } catch (error) {
+    const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+    console.log(message);
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -95,6 +106,21 @@ const orderSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         toast.error(action.payload);
+      })
+      .addCase(updatePaymentMode.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePaymentMode.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.orders.findIndex(order => order._id === action.payload._id);
+        if (index !== -1) {
+          state.orders[index] = action.payload;
+        }        
+        toast.success("Order updated successfully");
+      })
+      .addCase(updatePaymentMode.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   }
 });

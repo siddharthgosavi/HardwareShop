@@ -10,6 +10,12 @@ const createOrder = async formData => {
   return response.data;
 };
 
+// update payment mode in Order
+const updatePaymentMode = async ({ id, paymentMode }) => {
+  const response = await axios.patch(ORDER_URL + id, { paymentMode });
+  return response.data;
+};
+
 // Get all Orders
 const getOrders = async () => {
   const response = await axios.get(ORDER_URL);
@@ -25,7 +31,8 @@ const getOrder = async id => {
 const orderService = {
   createOrder,
   getOrders,
-  getOrder
+  getOrder,
+  updatePaymentMode
 };
 
 export default orderService;
