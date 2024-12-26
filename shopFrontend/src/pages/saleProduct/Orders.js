@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader, { SpinnerImg } from "../../components/loader/Loader";
 import Search from "../../components/search/Search";
-import { AiFillDelete, AiOutlineEye, AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
+import { AiOutlineEye, AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
-import ReactPaginate from "react-paginate";
-import { FILTER_ORDERS, selectFilteredOrders } from "../../redux/features/orders/filterOrdersSlice";
+import { FILTER_ORDERS } from "../../redux/features/orders/filterOrdersSlice";
 import moment from "moment-timezone";
 import OrderDetail from "./OrderDetail";
 import "./Orders.scss";
@@ -38,10 +37,10 @@ const Orders = () => {
   }, [dispatch]);
 
   //   Begin Pagination
-  const [currentItems, setCurrentItems] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [itemOffset, setItemOffset] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [, setCurrentItems] = useState([]);
+  const [, setPageCount] = useState(0);
+  const [itemOffset, ] = useState(0);
+  const [itemsPerPage, ] = useState(15);
 
   useEffect(() => {
     if (filteredOrders) {
@@ -51,10 +50,6 @@ const Orders = () => {
     }
   }, [itemOffset, itemsPerPage, filteredOrders]);
 
-  const handlePageClick = event => {
-    const newOffset = (event.selected * itemsPerPage) % filteredOrders.length;
-    setItemOffset(newOffset);
-  };
   //   End Pagination
 
   useEffect(() => {

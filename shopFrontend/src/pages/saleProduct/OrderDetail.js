@@ -26,16 +26,17 @@ const OrderDetail = ({ order, closeDetail }) => {
       );
       setProductDetails(details);
       setLoading(false);
-      console.log("Fetched product details:", details);
     };
 
     fetchProductDetails();
   }, [products, dispatch]);
 
   const generatePDF = async () => {
-    var sizer = 300;
+    var sizer = 150;
     var count = productDetails.length;
-    count > 15 && count <= 20 ? (sizer = 200) : count > 20 && count <= 31 ? (sizer = 135) : count > 31 && (sizer = 120);
+    count < 5 && count > 15 && count <= 20 ? (sizer = 200) : count > 20 && count <= 30 ? (sizer = 100) : count > 31 && (sizer = 35);
+    console.log(sizer);
+
     const input = contentRef.current;
     const canvas = await html2canvas(input, { scale: 2 });
     const imgData = canvas.toDataURL("image/jpeg", 0.75);

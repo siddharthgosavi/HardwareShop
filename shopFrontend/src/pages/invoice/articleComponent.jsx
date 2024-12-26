@@ -3,8 +3,6 @@ import "./invoice.css";
 import moment from "moment-timezone";
 
 function ArticleComponent({ order, productDetails }) {
-  console.log('Product details in articleComponent:', productDetails);
-
   return (
     <body>
       <article>
@@ -79,10 +77,10 @@ function ArticleComponent({ order, productDetails }) {
               return (
                 <tr key={product.product}>
                   <td>{index + 1}</td>
-                  <td>{productDetail ? productDetail.product.name : 'Loading...'}</td>
+                  <td>{productDetail ? productDetail.product.name : "Loading..."}</td>
                   <td>{product.quantity}</td>
-                  <td>₹{productDetail ? productDetail.product.price : 'Loading...'}</td>
-                  <td>₹{productDetail ? product.quantity * productDetail.product.price : 'Loading...'}</td>
+                  <td>₹{productDetail ? productDetail.product.price : "Loading..."}</td>
+                  <td>₹{productDetail ? product.quantity * productDetail.product.price : "Loading..."}</td>
                 </tr>
               );
             })}
@@ -121,11 +119,11 @@ function ArticleComponent({ order, productDetails }) {
 
       <aside className="signature-section">
         <div className="signature">
-          <h4 className='sign'>{order.customerInfo.name}'s Sign</h4>
+          <h4 className="sign">{order.customerInfo.name}'s Sign</h4>
           <div className="signature-line"></div>
         </div>
         <div className="signature">
-          <h4 className='sign'>Sai Enterprises Sign</h4>
+          <h4 className="sign">Sai Enterprises Sign</h4>
           <div className="signature-line"></div>
         </div>
       </aside>

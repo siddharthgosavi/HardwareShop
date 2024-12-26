@@ -17,7 +17,7 @@ export const createOrder = createAsyncThunk("orders/create", async (formData, th
     return await orderService.createOrder(formData);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -28,7 +28,7 @@ export const getOrders = createAsyncThunk("orders/getAll", async (_, thunkAPI) =
     return await orderService.getOrders();
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -39,7 +39,7 @@ export const getOrder = createAsyncThunk("orders/get", async (id, thunkAPI) => {
     return await orderService.getOrder(id);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -50,7 +50,7 @@ export const updatePaymentMode = createAsyncThunk("orders/updatePaymentMode", as
     return await orderService.updatePaymentMode({ id, paymentMode });
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -107,7 +107,7 @@ const orderSlice = createSlice({
         state.message = action.payload;
         toast.error(action.payload);
       })
-      .addCase(updatePaymentMode.pending, (state) => {
+      .addCase(updatePaymentMode.pending, state => {
         state.isLoading = true;
       })
       .addCase(updatePaymentMode.fulfilled, (state, action) => {
@@ -115,7 +115,7 @@ const orderSlice = createSlice({
         const index = state.orders.findIndex(order => order._id === action.payload._id);
         if (index !== -1) {
           state.orders[index] = action.payload;
-        }        
+        }
         toast.success("Order updated successfully");
       })
       .addCase(updatePaymentMode.rejected, (state, action) => {

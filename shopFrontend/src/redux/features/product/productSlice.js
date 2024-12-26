@@ -20,7 +20,7 @@ export const createProduct = createAsyncThunk("products/create", async (formData
     return await productService.createProduct(formData);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -31,7 +31,7 @@ export const getProducts = createAsyncThunk("products/getAll", async (_, thunkAP
     return await productService.getProducts();
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -42,7 +42,7 @@ export const deleteProduct = createAsyncThunk("products/delete", async (id, thun
     return await productService.deleteProduct(id);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -53,7 +53,7 @@ export const getProduct = createAsyncThunk("products/getProduct", async (id, thu
     return await productService.getProduct(id);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -63,7 +63,7 @@ export const updateProduct = createAsyncThunk("products/updateProduct", async ({
     return await productService.updateProduct(id, formData);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });

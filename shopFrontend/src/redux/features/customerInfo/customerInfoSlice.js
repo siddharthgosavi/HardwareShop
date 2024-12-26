@@ -17,7 +17,7 @@ export const createCustomer = createAsyncThunk("customers/create", async (formDa
     return await customerInfoService.createCustomerInfo(formData);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -28,7 +28,7 @@ export const getCustomers = createAsyncThunk("customers/getAll", async (_, thunk
     return await customerInfoService.getCustomers();
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
@@ -39,7 +39,7 @@ export const getCustomer = createAsyncThunk("customers/get", async (id, thunkAPI
     return await customerInfoService.getCustomer(id);
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-    console.log(message);
+
     return thunkAPI.rejectWithValue(message);
   }
 });
