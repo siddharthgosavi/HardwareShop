@@ -224,7 +224,7 @@ const ProductList = ({ products, isLoading }) => {
             </table>
           )}
         </div>
-        <ReactPaginate breakLabel="..." nextLabel="Next" onPageChange={handlePageClick} pageRangeDisplayed={3} pageCount={pageCount} previousLabel="Prev" renderOnZeroPageCount={null} containerClassName="pagination" pageLinkClassName="page-num" previousLinkClassName="page-num" nextLinkClassName="page-num" activeLinkClassName="activePage" />
+        <ReactPaginate breakLabel="..." nextLabel="Next" onPageChange={handlePageClick} pageRangeDisplayed={3} pageCount={pageCount} previousLabel="Prev" renderOnZeroPageCount={null} containerClassName="pagination1" pageLinkClassName="page-num" previousLinkClassName="page-num" nextLinkClassName="page-num" activeLinkClassName="activePage" />
       </div>
     </div>
   );

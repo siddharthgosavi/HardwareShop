@@ -431,11 +431,7 @@ p {
   margin-bottom: 1rem;
 
   background: rgb(217, 8, 170);
-  background: linear-gradient(
-    135deg,
-    rgba(163, 1, 191, 1) 44%,
-    rgba(217, 8, 170, 1) 57%
-  );
+  background: linear-gradient(135deg, rgba(163, 1, 191, 1) 44%, rgba(217, 8, 170, 1) 57%);
 }
 
 .--list-style-none {
@@ -469,7 +465,7 @@ a:hover {
   min-height: 200px;
 }
 
-.pagination {
+.pagination1 {
   list-style: none;
   display: flex;
   justify-content: center;
@@ -478,7 +474,7 @@ a:hover {
   font-size: 1rem;
 }
 
-.pagination .page-num {
+.pagination1 .page-num {
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 3px;
@@ -488,7 +484,7 @@ a:hover {
   margin: 2px;
 }
 
-.pagination .page-num:hover {
+.pagination1 .page-num:hover {
   color: #fff;
   background-color: var(--light-blue);
 }
