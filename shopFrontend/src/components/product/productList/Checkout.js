@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Checkout.scss";
-import Card from "../../components/card/Card";
-import { createCustomer, selectIsLoading as customerIsLoading, getCustomers } from "../../redux/features/customerInfo/customerInfoSlice";
-import { createOrder, selectIsLoading as orderIsLoading } from "../../redux/features/orders/orderSlice";
+import Card from "../../../components/card/Card";
+import { createCustomer, selectIsLoading as customerIsLoading, getCustomers } from "../../../redux/features/customerInfo/customerInfoSlice";
+import { createOrder, selectIsLoading as orderIsLoading } from "../../../redux/features/orders/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../components/loader/Loader";
+import Loader from "../../../components/loader/Loader";
 
 const Checkout = ({ cartItems, total }) => {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ const Checkout = ({ cartItems, total }) => {
     address: "",
     mobile: ""
   });
+  const [paymentMode, setPaymentMode] = useState("Cash");
   const [errors, setErrors] = useState({});
 
   const getAllCustomers = async () => {
@@ -69,13 +70,16 @@ const Checkout = ({ cartItems, total }) => {
           id: item.product._id,
           quantity: item.quantity
         })),
+        paymentMode: paymentMode,
         total: total
       };
 
-      console.log("place order", placeOrder);
-
       const order = await dispatch(createOrder(placeOrder));
-      console.log("order", order);
+
+      if (order.payload._id) {
+        window.location.href = "/sale-product";
+        alert("Order placed successfully");
+      }
     }
   };
 
@@ -187,6 +191,45 @@ const Checkout = ({ cartItems, total }) => {
               <label>Customer Address:</label>
               <input type="text" id="address" onFocus={() => setFiltered([])} placeholder="Customer address" value={customerInfo.address} onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })} />
               {errors.address && <span className="error">{errors.address}</span>}
+
+              <label>Payment mode:</label>
+              <div className="mydict">
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      name="radio"
+                      onChange={() => {
+                        setPaymentMode("Cash");
+                      }}
+                      checked={paymentMode === "Cash"}
+                    />
+                    <span>Cash</span>
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="radio"
+                      onChange={() => {
+                        setPaymentMode("Online");
+                      }}
+                      checked={paymentMode === "Online"}
+                    />
+                    <span>Online</span>
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="radio"
+                      onChange={() => {
+                        setPaymentMode("Unpaid");
+                      }}
+                      checked={paymentMode === "Unpaid"}
+                    />
+                    <span>Unpaid</span>
+                  </label>
+                </div>
+              </div>
 
               <div className="--my">
                 <button type="submit" className="--btn --btn-primary">

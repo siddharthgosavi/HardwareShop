@@ -44,7 +44,6 @@ const Login = () => {
     setIsLoading(true);
     try {
       const data = await loginUser(userData);
-      console.log(data);
       await dispatch(SET_LOGIN(true));
       await dispatch(SET_NAME(data.name));
       navigate("/dashboard");
@@ -78,7 +77,7 @@ const Login = () => {
 
           <span className={styles.register}>
             &nbsp; Don't have an account?&nbsp;
-            <a style={{ fontWeight: "bold", color: "blue" }} target={"_blank"} rel="noreferrer"  href={"https://www.linkedin.com/in/siddharthgosavi/"}>
+            <a style={{ fontWeight: "bold", color: "blue" }} target={"_blank"} rel="noreferrer" href={"https://www.linkedin.com/in/siddharthgosavi/"}>
               Contact Developer
             </a>
           </span>

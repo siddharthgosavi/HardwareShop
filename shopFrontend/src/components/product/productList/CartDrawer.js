@@ -3,13 +3,31 @@ import "./CartDrawer.scss";
 import { FaWindowClose } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Modal from "../../modal/Modal";
+import Checkout from "./Checkout"
 
 const CartDrawer = ({ isOpen, onClose, cartItems, deleteCourseFromCartFunction, totalAmountCalculationFunction, setCartItems }) => {
   const [total, setTotal] = useState(totalAmountCalculationFunction);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     setTotal(totalAmountCalculationFunction);
   }, [cartItems]);
+
+  if(isModalOpen){
+    return <Modal isOpen={isModalOpen}  onClose={handleModalClose}>
+      <Checkout cartItems={cartItems} total={total}/>
+    </Modal>
+  }
 
   return (
     <div className={`cart-drawer ${isOpen ? "open" : ""}`}>
@@ -85,10 +103,15 @@ const CartDrawer = ({ isOpen, onClose, cartItems, deleteCourseFromCartFunction, 
               <div className="checkout-total">
                 <p className="total">Total Amount: ₹{total}</p>
               </div>
-              <button className="checkout-button" disabled={cartItems.length === 0 || totalAmountCalculationFunction() === 0}>
-                <Link to="/sale-product" state={{ cartItems, total }}>
-                  Proceed to Payment
-                </Link>
+              <button
+                onClick={() => {
+                  handleModalOpen();
+                  onClose();
+                }}
+                className="checkout-button"
+                disabled={cartItems.length === 0 || totalAmountCalculationFunction() === 0}
+              >
+                Proceed to Payment
               </button>
             </div>
           </div>

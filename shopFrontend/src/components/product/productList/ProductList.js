@@ -16,13 +16,13 @@ import { Link } from "react-router-dom";
 import Icon from "../../../assets/hardware.png";
 import { BiCart } from "react-icons/bi";
 import CartDrawer from "./CartDrawer";
+import Modal from "../../modal/Modal";
 
 const ProductList = ({ products, isLoading }) => {
   const [search, setSearch] = useState("");
   const [cartItemIds, setCartItemIds] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const filteredProducts = useSelector(selectFilteredPoducts);
-  const [total, setTotal] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -119,9 +119,20 @@ const ProductList = ({ products, isLoading }) => {
     dispatch(FILTER_PRODUCTS({ products, search }));
   }, [products, search, dispatch]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="product-list">
-      <CartDrawer isOpen={isCartOpen} cartItems={cartItems} onClose={toggleCart} deleteCourseFromCartFunction={deleteCourseFromCartFunction} totalAmountCalculationFunction={totalAmountCalculationFunction} setCartItems={setCartItems} />
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} />
+      <CartDrawer handleModalOpen={handleModalOpen} isOpen={isCartOpen} cartItems={cartItems} onClose={toggleCart} deleteCourseFromCartFunction={deleteCourseFromCartFunction} totalAmountCalculationFunction={totalAmountCalculationFunction} setCartItems={setCartItems} />
       <hr />
       <div className="table">
         <div className="--flex-between --flex-dir-column">
@@ -185,7 +196,7 @@ const ProductList = ({ products, isLoading }) => {
                         {"₹"}
                         {price}
                       </td>
-                      <td>{quantity}</td>
+                      <td>{parseInt(quantity) === 0 ? <p style={{ color: "red", fontWeight: "bolder" }}>Out of stock</p> : quantity}</td>
                       <td>
                         {"₹"}
                         {price * quantity}
@@ -204,7 +215,7 @@ const ProductList = ({ products, isLoading }) => {
                         <span>
                           <FaTrashAlt size={20} color={"red"} onClick={() => confirmDelete(_id)} />
                         </span>
-                        <span>{cartItemIds.includes(_id) ? <BsCartCheckFill size={20} color={"red"} onClick={() => deleteCourseFromCartFunction(product)} /> : <BsCartPlus size={20} color={"green"} onClick={() => addCourseToCartFunction(product)} />}</span>
+                        {parseInt(quantity) !== 0 && <span>{cartItemIds.includes(_id) ? <BsCartCheckFill size={20} color={"red"} onClick={() => deleteCourseFromCartFunction(product)} /> : <BsCartPlus size={20} color={"green"} onClick={() => addCourseToCartFunction(product)} />}</span>}
                       </td>
                     </tr>
                   );

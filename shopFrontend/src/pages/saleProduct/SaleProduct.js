@@ -1,22 +1,33 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import Loader from "../../components/loader/Loader";
-import { selectIsLoading } from "../../redux/features/product/productSlice";
-import Checkout from "./Checkout";
+
+import useRedirectLoggedOutUser from "../../customHook/useRedirectLoggedOutUser";
+import { selectIsLoggedIn } from "../../redux/features/auth/authSlice";
+import { getOrders } from "../../redux/features/orders/orderSlice";
+import Orders from "./Orders";
 
 const SaleProduct = () => {
   const location = useLocation();
   const { cartItems, total } = location.state ? location.state : "";
-  const isLoading = useSelector(selectIsLoading);
 
-  return (
-    <div>
-      {isLoading && <Loader />}
-      <h3 className="--mt">Sale Product</h3>
-      {cartItems && cartItems.length > 0 && <Checkout cartItems={cartItems} total={total} />}
-    </div>
-  );
+  useRedirectLoggedOutUser("/login");
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
+
+  const { orders, isLoading, isError, message } = useSelector(state => state.order);
+
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      dispatch(getOrders());
+    }
+
+    if (isError) {
+      console.log(message);
+    }
+  }, [isLoggedIn, isError, message, dispatch]);
+
+  return <div>{isLoggedIn && <Orders orders={orders} isLoading={isLoading} />}</div>;
 };
 
 export default SaleProduct;

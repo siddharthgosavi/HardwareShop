@@ -2,10 +2,21 @@ const asyncHandler = require("express-async-handler");
 const Order = require("../models/orderModel");
 const CustomerInfo = require("../models/customerInfoModel");
 const Product = require("../models/productModel");
+const Counter = require("../models/counterModel");
+
+// Function to get the next order ID
+const getNextOrderId = async () => {
+  const counter = await Counter.findOneAndUpdate(
+    { name: "orderId" },
+    { $inc: { value: 1 } },
+    { new: true, upsert: true }
+  );
+  return counter.value.toString().padStart(6, "0");
+};
 
 // Create Order
 const createOrder = asyncHandler(async (req, res) => {
-  const { customerInfoId, products, total } = req.body;
+  const { customerInfoId, products, total, paymentMode } = req.body;
 
   const customerInfo = await CustomerInfo.findById(customerInfoId);
   if (!customerInfo) {
@@ -21,16 +32,24 @@ const createOrder = asyncHandler(async (req, res) => {
       throw new Error("Product not found");
     }
 
+    // Reduce product quantity
+    product.quantity -= productData.quantity;
+    await product.save();
+
     productsArray.push({
       product: product,
       quantity: productData.quantity
     });
   }
 
+  const orderId = await getNextOrderId();
+
   const order = await Order.create({
+    orderId,
     customerInfo: customerInfo,
     products: productsArray,
-    total
+    total,
+    paymentMode 
   });
 
   res.status(201).json(order);

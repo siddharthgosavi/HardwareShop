@@ -58,7 +58,7 @@ const orderSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.orders.push(action.payload);
-        toast.success("Order added successfully");
+        toast.success("Order added successfully", { autoClose: 8000 });
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.isLoading = false;
